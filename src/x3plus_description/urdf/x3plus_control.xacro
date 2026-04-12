@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </hardware>
+        
+        <xacro:macro name="wheel_control" params="joint_name">
+            <joint name="${joint_name}">
+                <command_interface name="velocity">
+                    <param name="min">-15.0</param>
+                    <param name="max">15.0</param>
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+        </xacro:macro>
+        <xacro:wheel_control joint_name="front_left_wheel_joint"/>
+        <xacro:wheel_control joint_name="front_right_wheel_joint"/>
+        <xacro:wheel_control joint_name="rear_left_wheel_joint"/>
+        <xacro:wheel_control joint_name="rear_right_wheel_joint"/>
+
+        <xacro:macro name="arm_control" params="joint_name">
+            <joint name="${joint_name}">
+                <command_interface name="position"><param name="min">-3.1416</param><param name="max">3.1416</param></command_interface>
+                <state_interface name="position"/><state_interface name="velocity"/>
+            </joint>
+        </xacro:macro>
+        <xacro:arm_control joint_name="joint1_waist"/>
+        <xacro:arm_control joint_name="joint2_shoulder"/>
+        <xacro:arm_control joint_name="joint3_elbow"/>
+        <xacro:arm_control joint_name="joint4_wrist"/>
+        <xacro:arm_control joint_name="joint5_roll"/>
+        <xacro:arm_control joint_name="joint6_gripper"/>
+
+        <xacro:macro name="gripper_control" params="joint_name">
+            <joint name="${joint_name}">
+                <command_interface name="position"/>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                </joint>
+        </xacro:macro>
+        
+        <xacro:gripper_control joint_name="grip_joint"/>
+        <xacro:gripper_control joint_name="rfinger_joint_01"/>
+        <xacro:gripper_control joint_name="rfinger_joint_02"/>
+        <xacro:gripper_control joint_name="lfinger_grip_joint_01"/>
+        <xacro:gripper_control joint_name="lfinger_grip_joint_02"/>
+        <xacro:gripper_control joint_name="lfinger_grip_joint_03"/>
+    </ros2_control>
+
+    <gazebo>
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(find x3plus_gazebo)/config/controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+</robot>

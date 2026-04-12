@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <joint name="omni_to_dofbot_joint" type="fixed">
+        <origin xyz="0.1025 0 0.031" rpy="0 0 -1.57" />
+        <parent link="base_footprint" />
+        <child link="arm_pedestal_link" />
+    </joint>
+
+    <link name="mastil_link">
+        <visual>
+            <origin xyz="0 0 0.1775" rpy="0 0 0"/>
+            <geometry><box size="0.02 0.04 0.355"/></geometry>
+            <material name="grey"><color rgba="0.5 0.5 0.5 1.0"/></material>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0.1775"/>
+            <geometry><box size="0.02 0.04 0.355"/></geometry>
+        </collision>
+    </link>
+    <joint name="base_to_mastil_joint" type="fixed">
+        <origin xyz="-0.035 0 0.0615" rpy="0 0 0"/>
+        <parent link="base_footprint"/>
+        <child link="mastil_link"/>
+    </joint>
+
+    <link name="display_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find x3plus_description)/meshes/display_omni_dofbot.stl"/>
+            </geometry>
+            <material name="blue"><color rgba="0 0.7 0 1"/></material>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find x3plus_description)/meshes/display_omni_dofbot.stl"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="display_joint" type="fixed">
+        <parent link="mastil_link"/>
+        <child link="display_link"/>
+        <origin rpy="0 0 0" xyz="-0.07 0.0 0.265"/>
+    </joint>
+
+</robot>

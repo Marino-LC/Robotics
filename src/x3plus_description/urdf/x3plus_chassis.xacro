@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <link name="base_footprint"/>
+    <joint name="base_footprint_to_base_link" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 ${ground_clearance + (chassis_height/2)}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_link">
+        <visual><origin xyz="0 0 -0.04" rpy="0 0 0"/><geometry><box size="${chassis_length} ${chassis_width} 0.04"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="0 0 0.0" rpy="0 0 0"/><geometry><box size="${chassis_length-0.02} ${chassis_width-0.02} 0.01"/></geometry><material name="yahboom_green"/></visual>
+        <visual><origin xyz="0 0 0.04" rpy="0 0 0"/><geometry><box size="${chassis_length-0.02} ${chassis_width-0.02} 0.01"/></geometry><material name="yahboom_green"/></visual>
+        <collision><origin xyz="0 0 0.0" rpy="0 0 0"/><geometry><box size="${chassis_length} ${chassis_width} ${chassis_height}"/></geometry></collision>
+        <inertial><mass value="${chassis_mass}"/><inertia ixx="0.015" ixy="0" ixz="0" iyy="0.02" iyz="0" izz="0.03"/></inertial>
+    </link>
+
+    <xacro:macro name="omni_wheel" params="prefix x_pos y_pos">
+        <link name="${prefix}_wheel_link">
+            <visual><origin xyz="0 0 0" rpy="${pi/2} 0 0"/><geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry><material name="metal_black"/></visual>
+            <visual><origin xyz="${wheel_radius/1.5} 0 0" rpy="0 0 0"/><geometry><box size="0.01 0.05 0.01"/></geometry><material name="yahboom_green"/></visual>
+            <collision><origin xyz="0 0 0" rpy="${pi/2} 0 0"/><geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry></collision>
+            <inertial><mass value="${wheel_mass}"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0002"/></inertial>
+        </link>
+        <joint name="${prefix}_wheel_joint" type="continuous">
+            <parent link="base_link"/><child link="${prefix}_wheel_link"/>
+            <origin xyz="${x_pos} ${y_pos} ${wheel_pos_z}" rpy="0 0 0"/><axis xyz="0 1 0"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:omni_wheel prefix="front_left" x_pos="0.12" y_pos="0.14" />
+    <xacro:omni_wheel prefix="front_right" x_pos="0.12" y_pos="-0.14" />
+    <xacro:omni_wheel prefix="rear_left" x_pos="-0.12" y_pos="0.14" />
+    <xacro:omni_wheel prefix="rear_right" x_pos="-0.12" y_pos="-0.14" />
+
+    <link name="sensor_tower_link">
+        <visual><origin xyz="0 0 0.20" rpy="0 0 0"/><geometry><box size="0.04 0.04 0.40"/></geometry><material name="metal_black"/></visual>
+        <collision><origin xyz="0 0 0.20" rpy="0 0 0"/><geometry><box size="0.04 0.04 0.40"/></geometry></collision>
+        <inertial><mass value="0.2"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+    </link>
+    <joint name="base_to_tower" type="fixed"><parent link="base_link"/><child link="sensor_tower_link"/><origin xyz="-0.10 0 0.05" rpy="0 0 0"/></joint>
+
+    <link name="tower_camera_link"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><box size="0.02 0.10 0.025"/></geometry><material name="metal_black"/></visual></link>
+    <joint name="tower_to_camera" type="fixed"><parent link="sensor_tower_link"/><child link="tower_camera_link"/><origin xyz="0.03 0 0.40" rpy="0 0 0"/></joint>
+
+    <link name="display_panel_link"><visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><box size="0.01 0.12 0.18"/></geometry><material name="panel_blue"/></visual></link>
+    <joint name="tower_to_display" type="fixed"><parent link="sensor_tower_link"/><child link="display_panel_link"/><origin xyz="-0.03 0 0.30" rpy="0 -0.2 0"/></joint>
+
+    <link name="antenna_link">
+        <visual><origin xyz="0 -0.02 0.06" rpy="0 0.3 0"/><geometry><cylinder radius="0.005" length="0.12"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="0 0.02 0.06" rpy="0 0.3 0"/><geometry><cylinder radius="0.005" length="0.12"/></geometry><material name="metal_black"/></visual>
+    </link>
+    <joint name="base_to_antenna" type="fixed"><parent link="base_link"/><child link="antenna_link"/><origin xyz="-0.13 0 0.05" rpy="0 0 0"/></joint>
+
+    <link name="lidar_link">
+        <visual><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><cylinder radius="0.05" length="0.04"/></geometry><material name="metal_black"/></visual>
+        <collision><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><cylinder radius="0.05" length="0.04"/></geometry></collision>
+    </link>
+    <joint name="base_to_lidar" type="fixed"><parent link="base_link"/><child link="lidar_link"/><origin xyz="-0.02 0 0.05" rpy="0 0 0"/></joint>
+
+    <gazebo reference="base_link"><material>Gazebo/Black</material></gazebo>
+    <gazebo reference="sensor_tower_link"><material>Gazebo/Black</material></gazebo>
+    <gazebo reference="tower_camera_link"><material>Gazebo/Black</material></gazebo>
+    <gazebo reference="display_panel_link"><material>Gazebo/Blue</material></gazebo>
+    <gazebo reference="lidar_link"><material>Gazebo/Black</material></gazebo>
+
+    <xacro:macro name="gazebo_wheel_physics" params="link_name">
+        <gazebo reference="${link_name}">
+            <material>Gazebo/Black</material>
+            <mu1>100.0</mu1>
+            <mu2>100.0</mu2>
+            <kp>10000000.0</kp>
+            <kd>1.0</kd>
+            <minDepth>0.005</minDepth>
+            <maxVel>0.1</maxVel>
+        </gazebo>
+    </xacro:macro>
+    <xacro:gazebo_wheel_physics link_name="front_left_wheel_link"/>
+    <xacro:gazebo_wheel_physics link_name="front_right_wheel_link"/>
+    <xacro:gazebo_wheel_physics link_name="rear_left_wheel_link"/>
+    <xacro:gazebo_wheel_physics link_name="rear_right_wheel_link"/>
+</robot>

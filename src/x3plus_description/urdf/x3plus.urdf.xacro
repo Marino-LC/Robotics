@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="rosmaster_x3plus" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+    <xacro:include filename="$(find x3plus_description)/urdf/common_properties.xacro" />
+    
+    <xacro:include filename="$(find x3plus_description)/urdf/x3plus_chassis.xacro" />
+    
+    <xacro:include filename="$(find x3plus_description)/urdf/dofbot_arm.xacro" />
+    
+    <xacro:include filename="$(find x3plus_description)/urdf/x3plus_control.xacro" />
+
+    <xacro:include filename="$(find x3plus_description)/urdf/x3plus_imu.xacro"/>
+
+    <xacro:include filename="$(find x3plus_description)/urdf/x3plus_accessories.xacro"/>
+
+</robot>

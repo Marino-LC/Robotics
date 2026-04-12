@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <link name="arm_pedestal_link">
+        <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><cylinder radius="0.045" length="0.005"/></geometry><material name="yahboom_green"/></visual>
+        <visual><origin xyz="0 0 0.04" rpy="0 0 0"/><geometry><cylinder radius="0.045" length="0.005"/></geometry><material name="yahboom_green"/></visual>
+        <visual><origin xyz="0.03 0.03 0.02" rpy="0 0 0"/><geometry><cylinder radius="0.003" length="0.04"/></geometry><material name="brass"/></visual>
+        <visual><origin xyz="-0.03 0.03 0.02" rpy="0 0 0"/><geometry><cylinder radius="0.003" length="0.04"/></geometry><material name="brass"/></visual>
+        <visual><origin xyz="0.03 -0.03 0.02" rpy="0 0 0"/><geometry><cylinder radius="0.003" length="0.04"/></geometry><material name="brass"/></visual>
+        <visual><origin xyz="-0.03 -0.03 0.02" rpy="0 0 0"/><geometry><cylinder radius="0.003" length="0.04"/></geometry><material name="brass"/></visual>
+        <visual><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><box size="0.04 0.03 0.035"/></geometry><material name="metal_black"/></visual>
+        <collision><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><cylinder radius="0.045" length="0.045"/></geometry></collision>
+        <inertial><mass value="0.2"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+    </link>
+    
+    <link name="arm_link1_waist">
+        <visual><origin xyz="0 0 0.015" rpy="0 0 0"/><geometry><box size="0.04 0.05 0.03"/></geometry><material name="yahboom_green"/></visual>
+        <collision><origin xyz="0 0 0.015" rpy="0 0 0"/><geometry><box size="0.04 0.05 0.03"/></geometry></collision>
+        <inertial><mass value="0.05"/><inertia ixx="0.00005" ixy="0" ixz="0" iyy="0.00005" iyz="0" izz="0.00005"/></inertial>
+    </link>
+    <joint name="joint1_waist" type="revolute"><parent link="arm_pedestal_link"/><child link="arm_link1_waist"/><origin xyz="0 0 0.045" rpy="0 0 0"/><axis xyz="0 0 1"/><limit lower="${-pi/2}" upper="${pi/2}" effort="10" velocity="1.0"/></joint>
+
+    <link name="arm_link2_shoulder">
+        <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><box size="0.03 0.05 0.04"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="0 0 0.04" rpy="0 0 0"/><geometry><box size="0.04 0.03 0.08"/></geometry><material name="yahboom_green"/></visual>
+        <collision><origin xyz="0 0 0.04" rpy="0 0 0"/><geometry><box size="0.04 0.03 0.10"/></geometry></collision>
+        <inertial><mass value="0.1"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+    </link>
+    <joint name="joint2_shoulder" type="revolute"><parent link="arm_link1_waist"/><child link="arm_link2_shoulder"/><origin xyz="0 0 0.03" rpy="0 0 0"/><axis xyz="0 1 0"/><limit lower="${-pi/2}" upper="${pi/2}" effort="10" velocity="1.0"/></joint>
+
+    <link name="arm_link3_elbow">
+        <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><box size="0.03 0.05 0.04"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="0 0 0.04" rpy="0 0 0"/><geometry><box size="0.04 0.03 0.08"/></geometry><material name="yahboom_green"/></visual>
+        <collision><origin xyz="0 0 0.04" rpy="0 0 0"/><geometry><box size="0.04 0.03 0.10"/></geometry></collision>
+        <inertial><mass value="0.1"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+    </link>
+    <joint name="joint3_elbow" type="revolute"><parent link="arm_link2_shoulder"/><child link="arm_link3_elbow"/><origin xyz="0 0 0.08" rpy="0 0 0"/><axis xyz="0 1 0"/><limit lower="${-pi/2}" upper="${pi/2}" effort="10" velocity="1.0"/></joint>
+
+    <link name="arm_link4_wrist">
+        <visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><box size="0.03 0.05 0.04"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="0 0 0.03" rpy="0 0 0"/><geometry><box size="0.04 0.04 0.04"/></geometry><material name="yahboom_green"/></visual>
+        <visual><origin xyz="0.02 0 0.04" rpy="0 -0.5 0"/><geometry><box size="0.02 0.04 0.02"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="0.035 0 0.045" rpy="0 -0.5 0"/><geometry><cylinder radius="0.01" length="0.015"/></geometry><material name="metal_black"/></visual>
+        <collision><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><box size="0.04 0.04 0.06"/></geometry></collision>
+        <inertial><mass value="0.1"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+    </link>
+    <joint name="joint4_wrist" type="revolute"><parent link="arm_link3_elbow"/><child link="arm_link4_wrist"/><origin xyz="0 0 0.08" rpy="0 0 0"/><axis xyz="0 1 0"/><limit lower="${-pi/2}" upper="${pi/2}" effort="5" velocity="1.0"/></joint>
+
+    <link name="arm_link5_roll">
+        <visual><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><box size="0.02 0.03 0.04"/></geometry><material name="metal_black"/></visual>
+        <collision><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><box size="0.02 0.03 0.04"/></geometry></collision>
+        <inertial><mass value="0.05"/><inertia ixx="0.00005" ixy="0" ixz="0" iyy="0.00005" iyz="0" izz="0.00005"/></inertial>
+    </link>
+    <joint name="joint5_roll" type="revolute"><parent link="arm_link4_wrist"/><child link="arm_link5_roll"/><origin xyz="0.02 0 0.03" rpy="0 1.5708 0"/><axis xyz="0 0 1"/><limit lower="${-pi}" upper="${pi}" effort="5" velocity="1.0"/></joint>
+
+    <link name="gripper_link">
+        <visual><origin xyz="0 0 0.02" rpy="0 0 0"/><geometry><box size="0.06 0.02 0.04"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="0.025 0 0.05" rpy="0 0 0"/><geometry><box size="0.01 0.01 0.05"/></geometry><material name="metal_black"/></visual>
+        <visual><origin xyz="-0.025 0 0.05" rpy="0 0 0"/><geometry><box size="0.01 0.01 0.05"/></geometry><material name="metal_black"/></visual>
+        <collision><origin xyz="0 0 0.03" rpy="0 0 0"/><geometry><box size="0.06 0.02 0.08"/></geometry></collision>
+        <inertial><mass value="0.05"/><inertia ixx="0.00005" ixy="0" ixz="0" iyy="0.00005" iyz="0" izz="0.00005"/></inertial>
+    </link>
+    <joint name="joint6_gripper" type="revolute"><parent link="arm_link5_roll"/><child link="gripper_link"/><origin xyz="0 0 0.04" rpy="0 0 0"/><axis xyz="0 1 0"/><limit lower="-0.5" upper="0.5" effort="5" velocity="1.0"/></joint>
+
+    <gazebo reference="arm_pedestal_link"><material>Gazebo/Green</material></gazebo>
+    <gazebo reference="arm_link1_waist"><material>Gazebo/Green</material></gazebo>
+    <gazebo reference="arm_link2_shoulder"><material>Gazebo/Green</material></gazebo>
+    <gazebo reference="arm_link3_elbow"><material>Gazebo/Green</material></gazebo>
+    <gazebo reference="arm_link4_wrist"><material>Gazebo/Green</material></gazebo>
+    <gazebo reference="arm_link5_roll"><material>Gazebo/Black</material></gazebo>
+    <gazebo reference="gripper_link"><material>Gazebo/Black</material></gazebo>
+</robot>
