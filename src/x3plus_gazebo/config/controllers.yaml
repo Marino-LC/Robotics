@@ -61,11 +61,6 @@ dofbot_gripper_controller:
       - position
       - velocity
     joints:
-      - grip_joint
-      - rfinger_joint_01
-      - rfinger_joint_02
-      - lfinger_grip_joint_01
-      - lfinger_grip_joint_02
-      - lfinger_grip_joint_03
+      - joint6_gripper
     allow_partial_joints_goal: false
     open_loop_control: true

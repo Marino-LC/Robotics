@@ -50,7 +50,7 @@ def generate_launch_description():
         executable='create',
         arguments=['-topic', 'robot_description', 
                    '-name', 'rosmaster_x3plus',
-                   '-z', '0.15'],
+                   '-z', '0.4'],
         output='screen'
     )
 

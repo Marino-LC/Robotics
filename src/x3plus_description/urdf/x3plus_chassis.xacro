@@ -69,7 +69,7 @@
             <material>Gazebo/Black</material>
             <mu1>100.0</mu1>
             <mu2>100.0</mu2>
-            <kp>10000000.0</kp>
+            <kp>100000.0</kp>
             <kd>1.0</kd>
             <minDepth>0.005</minDepth>
             <maxVel>0.1</maxVel>

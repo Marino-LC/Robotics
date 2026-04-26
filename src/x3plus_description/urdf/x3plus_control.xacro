@@ -38,15 +38,10 @@
                 <command_interface name="position"/>
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
-                </joint>
+            </joint>
         </xacro:macro>
         
-        <xacro:gripper_control joint_name="grip_joint"/>
-        <xacro:gripper_control joint_name="rfinger_joint_01"/>
-        <xacro:gripper_control joint_name="rfinger_joint_02"/>
-        <xacro:gripper_control joint_name="lfinger_grip_joint_01"/>
-        <xacro:gripper_control joint_name="lfinger_grip_joint_02"/>
-        <xacro:gripper_control joint_name="lfinger_grip_joint_03"/>
+        <xacro:gripper_control joint_name="joint6_gripper"/>
     </ros2_control>
 
     <gazebo>
